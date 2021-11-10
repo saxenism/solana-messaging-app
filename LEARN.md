@@ -113,7 +113,7 @@ This would result in a screen somewhat similar to this:
 
 ![](img/6.png)
 
-First we check whether we can see the *programs*, *app*, *programs*, *migrations* directory among others or not. If we can, we would head over to *programs/src/lib.rs* to see the default program that Anchor provides us. This is the most basic example possible on Anchor and what's happening here is simply that a user-defined function `Initialize` whenever called would successfully exit the program. That's all, nothing fancy. Now, let's try to compile this program using the following command:
+First we check whether we can see the *programs*, *app*, *programs*, *migrations* directory among others or not. If we can, we would head over to *programs/messengerapp/src/lib.rs* to see the default program that Anchor provides us. This is the most basic example possible on Anchor and what's happening here is simply that a user-defined function `Initialize` whenever called would successfully exit the program. That's all, nothing fancy. Now, let's try to compile this program using the following command:
 
 ```
 anchor build
@@ -123,7 +123,7 @@ This would trigger a build function and would something like this upon completio
 
 ![](img/7.png)
 
-This build creates a new folder in your project directory called, `target`. This `target` folder contains the `idl` directory, which would also contain the `idl` for our program. The `IDL` or Interface Description Language is very similar to ABI in Solidity and user for similar purposes, ie, for tests and front-end integrations. Next, we can move onto testing this program, so that we can get familiar with how testing is done in Anchor. Head to `tests/messengerapp.js`. Here, you'll see a test written in javascript to interact and test the default program. There are a lot of things in the test, that may not make sense to you right now, but stick around and we'll get to those shortly. The test would look something like this:
+This build creates a new folder in your project directory called, `target`. This `target` folder contains the `idl` directory, which would also contain the `idl` for our program. The `IDL` or Interface Description Language describes the instructions exposed by the contract and is very similar to ABI in Solidity and user for similar purposes, ie, for tests and front-end integrations. Next, we can move onto testing this program, so that we can get familiar with how testing is done in Anchor. Head to `tests/messengerapp.js`. Here, you'll see a test written in javascript to interact and test the default program. There are a lot of things in the test, that may not make sense to you right now, but stick around and we'll get to those shortly. The test would look something like this:
 
 ![](img/8.png)
 
@@ -139,5 +139,41 @@ The passing tests should result in the following screen:
 
 Now, let's head over to the `programs` directory again and start making changes to create our messaging app.
 
-## Writing our first program functions
+## Writing our first program function
 
+Head over to `programs/messengerapp/src/lib.rs` and clear the code written there apart from the macro declarations and crates (libraries) that we will be using. After the clearning, your coding screen should look somehting like this:
+
+![](img/10.png)
+
+Now let us simply define two functions that we will be using in our Solana program. The bulk of the program goes in a module under the `#[program]` macro. We'll just define them under the `pub mod messengerapp` and write the logic later. These two function definitions would look like this:
+```
+    pub fn initialize(ctx: Context<Initialize>, data: String) -> ProgramResult {
+        
+    }
+
+    pub fn update(ctx: Context<Update>, data: String) -> ProgramResult {
+        
+    }
+```
+Here `pub` means public and `fn` means function, implying that they are public functions that can be invoked from our program, ie it becomes a client-callable program function. The first argument of these functions is always `Context<T>` which consist of the solana accounts array and the program ID, which in essence is the required data to call just about any progarm on Solana. The next parameter of both these functions is a `String` named data, which we will be using as our message. The `ProgramResult` is the return type of both these functions, which actually is just an easier method to serve function results and/or errors.
+
+After defining the above two functions, your code should look something like this:
+
+![](img/11.png)
+
+Now, let's write our logic for the `initialize` function, ok? Let's first make our intentions clear for this function and the program in general. We want to keep track of two things here. First, is the data that is being passed while calling the function and the second is the list of all the data(messages) that have been passed to our specific account. So, we would want our main account (the account that will handle all the messaging stuff of the program) to have two fields, one for storing the incoming data and the other for keeping a record of all earlier data. We call this account the `base_account`. Also, keep in mind that since we will be adding to the data_list everytime a new data is introduced, we will need the account to be mutable, ie, the account should be able to accept changes. Write the following logic inside the `initialize` function now:
+
+```
+let base_account = &mut ctx.accounts.base_account;
+let copy = data.clone();
+base_account.data = data;
+base_account.data_list.push(copy);
+Ok(())
+```
+The `Ok(())` syntax is used for error handling of the ProgramResult type. You can think of `Ok(())` like a gate, that lets the program continue if there are no errors but sends the program into another state if an error is encountered.  
+
+Now, your coding screen should look something like this: 
+![](img/12.png)
+
+### A small note about Accounts on Solana:
+An account is not actually a wallet. Instead, it’s a way for the contract to persist data between calls. This includes information such as the count in our base_account, and also information about permissions on the account. Accounts pay rent in the form of lamports, and if it runs out, then the account is purged from the blockchain. Accounts with two years worth of rent attached are “rent-exempt” and can stay on the chain forever.
