@@ -15,12 +15,61 @@ This quest could get a little cumbersome, but stick till the end and you'll than
 
 ### Node.js
 
-Node.js can be easily installed from [this page](https://nodejs.org/en/download/), however, we would advise using [nvm](https://github.com/nvm-sh/nvm) for downloading and managing your node versions.
+We advise using `nvm` for downloading and managing your node versions. To download `nvm` use the following command and make sure to replace the `0.39.0` with the latest version:
+
+```
+curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh -o install_nvm.sh
+```
+
+Now run the install script from the contents you just downloaded in the following manner:
+
+```
+bash install_nvm.sh
+```
+Restart your shell and type the following command to verify whether nvm has been installed successfully or not:
+
+```
+nvm --version
+```
+
+This should result in something like this:
+
+![](img/25.png)
+
+Now, to download the latest `lts` version, simply type:
+
+```
+nvm install --lts
+```
+To find the version of the node version installed, simply run the following command:
+
+```
+ node --version
+```
+
+If this returns something like `v14.7.0`, you are good to go.
 
 ### Solana Tool Suite
 
-Solana Tool Suite is a really smooth CLI developer tooling from Solana labs and can be downloaded from [here](https://docs.solana.com/cli/install-solana-cli-tools). Note that if you are using a Windows system, the `solana-test-validator` command might not
-work on your system.
+To install Solana Tool Suite, first ensure that you have a working installation of Rust along with Cargo. To do that use this command in your terminal.
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+To interact with the SPL-programs (inbuilt programs offered to us by Solana itself), we’ll be using the `solana-cli`.
+First, we need to install the Solana tool suite in our machine. To do so, run the following command.
+```
+sh -c "$(curl -sSfL https://release.solana.com/v1.7.12/install)"
+```
+To confirm that Solana has been installed successfully and added to your PATH, run
+```
+solana --version
+```
+Now, we’ll be installing the spl-token-cli, which is a rust package (called a crate) for interacting with the SPL Token program that’ll be used for creating our tokens. It can be installed by running the following command.
+```
+cargo install spl-token-cli
+``` 
 
 ### Anchor
 
@@ -410,4 +459,4 @@ This should yield a result similar to:
 
 ### Congratulations:
 
-Congratulations on not only building the building blocks of a chat application on Solana, which you can use as time-capsule on the blockchain, but also successfully testing that. In the next quest, we can go on ahead to see how to connect the front-end of a website with our program and see for ourselves how well our program is working. See you all soon :)
+Congratulations on not only building the building blocks of a chat application on Solana, which you can use as time-capsule on the blockchain, but also successfully testing that. In the next quest, we can go on ahead to see how to connect the front-end of a website with our program and see for ourselves how well our program is working. We will also see how to shift our program from running on the localnet to the `devnet` or even the `mainnet-beta`. See you all soon :)
