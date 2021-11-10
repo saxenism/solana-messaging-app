@@ -350,3 +350,36 @@ What we did here `fetch` the `baseAccount` from the program after the `initializ
 Now let us write the second test, where we update the previously created `baseAccount` which we stored in `_baseAccount` and check whether new messages get stored in the `data_list` field or not.
 
 ## Writing the second test
+
+As mentioned in the last quest, our objective with this test is to update the `data_list` field of the `baseAccount` and then verify this updation. To do that, we will write the below code:
+
+```
+    const baseAccount = _baseAccount;
+
+    await program.rpc.update("My second message", {
+      accounts: {
+        baseAccount: baseAccount.publicKey,
+      },
+    });
+```
+
+With the above code, we assigned the `_baseAccount` to a new `baseAccount`. This step can be skipped. After that, just like how we called the `initialize` function earlier, we called the `update` function and provided it with the required params, which are the new message and the `baseAccount`. After that to verify whether the update took place or not, we will use the following code:
+
+```
+    const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+    console.log("Updated data: ", account.data);
+    assert.ok(account.data === "My second message");
+    console.log("All account data: ", account);
+    console.log("All data: ", account.dataList);
+    assert.ok(account.dataList.length === 2);
+```
+
+With this, your coding screen should look something like this:
+
+![](img/21.png)
+
+The `console.logs` can be skipped, but they are there for our own better understanding. So, in this block of code, we again fetch the `baseAccount` after the `update` function and check whether the `data` of the account has been updated or not. Then we print the details of the account itself, then the entire list of all the messages and finally we check whether the length of this `data_list` field of the `baseAccount` is 2 or not (since it should ideally contain [*My first message*, *My second message*]).
+
+With this we are done writing our tests, now all that remains is to actually run these tests.
+
+## Testing our program
