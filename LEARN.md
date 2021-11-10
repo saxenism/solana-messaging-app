@@ -275,3 +275,41 @@ Now, copy the **program ID** from the above output to the `declare_id` macro in 
 Congratulations, we are now done with writing the programs of our project. You just completed the smart contract (programs in Solana lingo) side of the Time Capsule project :D
 
 ## Creating the testing skeleton of our program
+
+Head over to `tests/messengerapp.js` and delete everything that's written there. We are going to be writing our tests from scratch. The first step would be to import the necessary libraries and constants. To do that, use the following code:
+
+```
+const assert = require('assert');
+const anchor = require('@project-serum/anchor');
+const { SystemProgram } = anchor.web3;
+```
+
+Now, since we will be using `Mocha` for testing our programs, we will create the skeleton of where we will be putting our tests. So, basically, how Mocha works is that it takes `describe` blocks as testing blocks and within those `describe` blocks there are numerous tests written using the `it` blocks. So, use the following code to create the skeleton:
+
+```
+describe("Testing our messaging app: ", function() {
+  const provider = anchor.Provider.env();
+  anchor.setProvider(provider);
+  const program = anchor.workspace.Messengerapp;
+
+  it("An account is initialized", async function() {
+
+  });
+
+  it("Update the account previously created: ", async function() {
+
+  });
+});
+```
+
+Now, your code screen should look something like:
+
+![](img/19.png)
+
+The additional things that we coded there were the introduction of `provider`. The `provider` is the abstraction of a connection to the Solana network. In the test, the Anchor framework will create the provider for us based on the environment `(anchor.Provider.env())`.
+
+Now, the `program` is an abstraction that combines the Provider, idl, and the programID (which is generated when the program is built) and allows us to call RPC methods against our program.
+
+When we have these two things, we can start calling functions in our program, which is what we will be doing in our next sub-quest.
+
+## Writing our first test
