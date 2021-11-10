@@ -98,3 +98,46 @@ solana airdrop 100
 This should result in something like:
 
 ![](img/5.png)
+
+## Setting up our Anchor project
+
+In this sub-quest all we would do is initialize an Anchor project and see whether everything's there and working fine or not and after move on ahead to make our own changes.
+Head over to your preferred destination for the project using your terminal and then type the following command:
+```
+anchor init messengerapp
+
+cd messengerapp
+``` 
+
+This would result in a screen somewhat similar to this:
+
+![](img/6.png)
+
+First we check whether we can see the *programs*, *app*, *programs*, *migrations* directory among others or not. If we can, we would head over to *programs/src/lib.rs* to see the default program that Anchor provides us. This is the most basic example possible on Anchor and what's happening here is simply that a user-defined function `Initialize` whenever called would successfully exit the program. That's all, nothing fancy. Now, let's try to compile this program using the following command:
+
+```
+anchor build
+```
+
+This would trigger a build function and would something like this upon completion:
+
+![](img/7.png)
+
+This build creates a new folder in your project directory called, `target`. This `target` folder contains the `idl` directory, which would also contain the `idl` for our program. The `IDL` or Interface Description Language is very similar to ABI in Solidity and user for similar purposes, ie, for tests and front-end integrations. Next, we can move onto testing this program, so that we can get familiar with how testing is done in Anchor. Head to `tests/messengerapp.js`. Here, you'll see a test written in javascript to interact and test the default program. There are a lot of things in the test, that may not make sense to you right now, but stick around and we'll get to those shortly. The test would look something like this:
+
+![](img/8.png)
+
+Next, to actually run these tests, first head over to the tab where you ran the solana-test-validator command and kill that process (using Ctrl-C). Now, use the following command:
+
+```
+anchor test
+```
+
+The passing tests should result in the following screen:
+
+![](img/9.png)
+
+Now, let's head over to the `programs` directory again and start making changes to create our messaging app.
+
+## Writing our first program functions
+
