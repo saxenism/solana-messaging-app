@@ -226,3 +226,52 @@ Your coding screen should look like this right now:
 You can read up on different types of account constraints [here](https://docs.rs/anchor-lang/0.18.0/anchor_lang/derive.Accounts.html).
 
 ## Defining all remaining Accounts of our program
+
+With the understanding about all kinds of `Account` marcos and the associated parameters with them, let's get straight into writing the other two account structs.
+
+```
+pub struct Update<'info> {
+    #[account(mut)]
+    pub base_account: Account<'info, BaseAccount>,
+```
+
+and now the final `BaseAccount` struct:
+
+```
+#[account]
+pub struct BaseAccount {
+    pub data: String,
+    pub data_list: Vec<String>,
+```
+
+Now, for the `Update` account struct, we notice that it is essentially the same as the `Initialize` account struct, it's just that we are using an existing field `base_account` of type `BaseAccount` and not creating it. After which, we define the `BaseAccount` that was being used everywhere. As discussed earlier, it has two fields, one is `data` of type `String` to store the incoming value of the message while the other is a `vector of strings` to store/persist all the messages in that account. A vector is a list of elements with no specified size. But, bear in mind that initially we had createed our base account with the space of `64 + 64` so there will be a limit to thow many messages can be stored. You can explore the limits at different sizes as a side quest.
+
+After writing these definitions, your code screen should be looking something like this:
+
+![](img/15.png)
+
+Good, now we are just one step away from being completely done with the smart contract (programs in Solana lingo) side of our project.
+
+## Updating our program_id
+
+Remember the `declare_id!` macro of our program that was declared at the top with a random looking string, that we did not talk about? It is time to fix that. Currently, it looks something like this:
+
+![](img/16.png)
+
+Since, we already discussed that we would be working on our local network, we need to deploy our program on our local network and then put the `program_id` recieved from there here at this macro. First make sure that your local validator is running in a different tab. If it is not, run it again in a different tab using the `solana-test-validator` command. Now use the following command to deploy your anchor program:
+
+```
+anchor deploy
+```
+
+The above command should result in a screen similar to this:
+
+![](img/17.png)
+
+Now, copy the **program ID** from the above output to the `declare_id` macro in our program. Something like this:
+
+![](img/18.png)
+
+Congratulations, we are now done with writing the programs of our project. You just completed the smart contract (programs in Solana lingo) side of the Time Capsule project :D
+
+## Creating the testing skeleton of our program
