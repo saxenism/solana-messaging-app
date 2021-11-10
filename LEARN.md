@@ -52,3 +52,49 @@ solana config get
 
 This should throw up a result similar to something like: 
 
+![](img/1.png)
+
+If you didnot set up your keypair earlier, then you won't be having the `Keypair Path` in your results. To set that up, follow the instructions over [here](https://docs.solana.com/wallet-guide/paper-wallet#seed-phrase-generation)
+
+We would want to remain on the local network for building our program and later shift to the devent or mainnet-beta if required. If the `RPC URL` field of your last result did not show `localhost`, you can set it to localhost using the following command:
+
+```
+solana config set --url localhost
+```
+
+Next, we would want to know our account/wallet address and airdrop some SOL tokens into it, to handle all the deployment, transactions etc costs that come with interacting with and using a Solana program. To do that first let's find our address. The command to do that is:
+```
+solana address
+```
+
+This would result into something like this:
+
+![](img/2.png)
+
+Then, for more comprehensive details of your account, use the following command with the address that you got from the last command
+```
+solana account <your address from the last command>
+```
+
+This would result into something like this:
+
+![](img/3.png)
+
+Next, we want to spin up our local network. Think of this local network as a mock Solana blockchain running on your own single system. This network would be required for development and testing of our program. To spin it up, in a separate tab, use the following command:
+```
+solana-test-validator
+```
+
+Once you get an image, like the one below, you know that your local validator (local network) is now up and running
+
+![](img/4.png)
+
+Now, our last task is to top up our account with some SOL, which you can do by using:
+
+```
+solana airdrop 100
+```
+
+This should result in something like:
+
+![](img/5.png)
