@@ -313,3 +313,40 @@ Now, the `program` is an abstraction that combines the Provider, idl, and the pr
 When we have these two things, we can start calling functions in our program, which is what we will be doing in our next sub-quest.
 
 ## Writing our first test
+
+The method to call the functions of our program is pretty straight-forward. We will use the program RPCs (Remote procedure calls) to access the function and then we will use the `web3.js` library to create `accounts` which have to be passed as the parameters to those functions. Let's first jump into the code of our first test and see things in action.
+
+```
+  it("An account is initialized", async function() {
+    const baseAccount  = anchor.web3.Keypair.generate();
+    await program.rpc.initialize("My first message", {
+      accounts: {
+        baseAccount: baseAccount.publicKey,
+        user: provider.wallet.publicKey,
+        systemProgram: SystemProgram.publicKey,
+      },
+      signers: [baseAccount]
+    });
+  });
+```
+
+Now, what we have done in the code above is simply create a `baseAccount` by generating a new account using the `web3` library. Then using the program RPC, we have called the `initialize` function and to that function we have supplied the required parameters, which were the `baseAccount`, `user`, `systemProgram` and the `signer`.
+
+After this function is run, we simply need to grab hold of the baseAccount and check it's `data` field and verify whether it has changed to `My first message` or not. To do that, we use the following lines of code:
+
+```
+    const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+    console.log('Data: ', account.data);
+    assert.ok(account.data === "My first message");
+    _baseAccount = baseAccount;
+```
+
+After this, your coding screen should look like this:
+
+![](img/20.png)
+
+What we did here `fetch` the `baseAccount` from the program after the `initialize` function has been run and store it in a variable called `account`. Then we check whether the `data` field of `account` is the same as our message or not. In the last step, we save the state of this `baseAccount` in a variable called `_baseAccount`, so that we can check that later in the other tests.
+
+Now let us write the second test, where we update the previously created `baseAccount` which we stored in `_baseAccount` and check whether new messages get stored in the `data_list` field or not.
+
+## Writing the second test
