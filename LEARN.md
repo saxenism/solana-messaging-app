@@ -177,3 +177,22 @@ Now, your coding screen should look something like this:
 
 ### A small note about Accounts on Solana:
 An account is not actually a wallet. Instead, it’s a way for the contract to persist data between calls. This includes information such as the count in our base_account, and also information about permissions on the account. Accounts pay rent in the form of lamports, and if it runs out, then the account is purged from the blockchain. Accounts with two years worth of rent attached are “rent-exempt” and can stay on the chain forever.
+
+## Writing out our second function
+
+In the last sub-quest we defined the `update` function, right? Now let's go ahead and write the logic for this function. 
+
+```
+let base_account = &mut ctx.accounts.base_account;
+let copy = data.clone();
+base_account.data = data;
+base_account.data_list.push(copy);
+Ok(())
+```
+
+Your code screen should now look like this:
+![](img/13.png)
+
+Wasn't this funny? We wrote the same code again, right? Well, yes, the logic of both the functions were same and the only real difference is in the `struct` inside of the `Context<>` class. This essentially is what would differentiate between whether the message coming in our program is the first message or some later messages. Now, the natural question would be where are all these `structs` defined? Calm down, champ. We haven't yet defined them, but that is exactly what we will be doing next.
+
+## Defining the structs used in our program
