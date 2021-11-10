@@ -193,6 +193,36 @@ Ok(())
 Your code screen should now look like this:
 ![](img/13.png)
 
-Wasn't this funny? We wrote the same code again, right? Well, yes, the logic of both the functions were same and the only real difference is in the `struct` inside of the `Context<>` class. This essentially is what would differentiate between whether the message coming in our program is the first message or some later messages. Now, the natural question would be where are all these `structs` defined? Calm down, champ. We haven't yet defined them, but that is exactly what we will be doing next.
+Wasn't this funny? We wrote the same code again, right? Well, yes, the logic of both the functions were same and the only real difference is in the `Account` inside of the `Context<>` struct. This is a simple container for the currently executing `program_id` generic over `Accounts`. This essentially is what would differentiate between whether the message coming in our program is the first message or some later messages. Now, the natural question would be where are all these `structs` defined? Calm down, champ. We haven't yet defined them, but that is exactly what we will be doing next.
 
-## Defining the structs used in our program
+## Defining the first Account struct used in our program
+
+Let's first define the `Initialize` struct used in our `initialize` function that we defined two sub-quests back. We already have gone over what `Accounts` and `Context` are. So, here just keep in mind that whenever we need to include multiple `accounts` in a struct, we would use the derive Accounts macro, which is `#[derive(Accounts)]`, basically when we want to *derive* an account to pass to the function using other `accounts`, we use the derive accounts macro and while defining a singular `account` we would simply use the normal account macro, which is `[account]`. Now the normal account marco can also consist of many parameters which denote the permissions related to that particular account and we will look into those as we move ahead. Write the following code into your editor:
+
+```
+#[derive(Accounts)]
+pub struct Initialize<'info> {
+    #[account(init, payer = user, space = 64 + 64)]
+    pub base_account: Account<'info, BaseAccount>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+```
+
+As discussed earlier, we used the derive Accounts macro since we had to incorporate 3 accounts here and for all these three accounts individually, we used the account macro. Now onto the arguments used with these macros. The `init` macro is used to create a new account owned by the current program which is our `messengerapp` program. Whenever `init` parameter is used, we must always specify the `payer` or the account that will be paying for creation of the account on the Solana blockchain, along with the `space` param which is the space with which the new account is created.
+
+The `mut` parameter marks an account as mutable, which essentially means our account will be altered and Solana will need to update the data in your account. So, always use the `mut` parameter for persisting changes. 
+
+Another new concept used here is the `Signer` type. This is used to enforce the constraint that the `authority` account (messengerapp in this case) *signed* the transaction. 
+
+The peculiar thing you might notice here is that the `base_account` field is of type `BaseAccount`, but that `BaseAccount` is not to be found anywhere, right? As always, we will be defining that in just the next sub-quest. So hold on and re-read all the info that you just recieved if you feel the need. In the next sub-quest we will be defining the `Update` and `BaseAccount` structs.
+
+Your coding screen should look like this right now:
+
+![](img/14.png)
+
+### Further Reading:
+You can read up on different types of account constraints [here](https://docs.rs/anchor-lang/0.18.0/anchor_lang/derive.Accounts.html).
+
+## Defining all remaining Accounts of our program
