@@ -383,3 +383,31 @@ The `console.logs` can be skipped, but they are there for our own better underst
 With this we are done writing our tests, now all that remains is to actually run these tests.
 
 ## Testing our program
+
+Remember, some time back we changed the `program_id` in the `declare_id` macro of our program? We will follow a similar step in the `Anchor.toml` file now. Open the `Anchor.toml` file and replace the old `program_id` with the new `program_id`, like so:
+
+![](img/22.png)
+
+Now, it's the moment of truth. Head over to the console and type the following command if you have not stopped the `solana-test-validator` running in a different tab:
+
+```
+anchor test --skip-local-validator
+```
+
+This will hopefully give a result similar to this:
+
+![](img/24.png)
+
+And if this didn't work for you go to your local validator tab and close it using `Ctrl` + `C` and after come back to the tab where you were testing and type the following command:
+
+```
+anchor test
+```
+
+This should yield a result similar to:
+
+![](img/23.png)
+
+### Congratulations:
+
+Congratulations on not only building the building blocks of a chat application on Solana, which you can use as time-capsule on the blockchain, but also successfully testing that. In the next quest, we can go on ahead to see how to connect the front-end of a website with our program and see for ourselves how well our program is working. See you all soon :)
