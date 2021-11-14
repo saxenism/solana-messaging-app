@@ -187,7 +187,7 @@ The `Ok(())` syntax is used for error handling of the ProgramResult type. You ca
 Now, your coding screen should look something like this: 
 ![](img/12.png)
 
-## A small note about Accounts on Solana:
+### A small note about Accounts on Solana:
 An account is not actually a wallet. Instead, it’s a way for the contract to persist data between calls. This includes information such as the count in our base_account, and also information about permissions on the account. Accounts pay rent in the form of lamports, and if it runs out, then the account is purged from the blockchain. Accounts with two years worth of rent attached are “rent-exempt” and can stay on the chain forever.
 
 # Writing out our second function
