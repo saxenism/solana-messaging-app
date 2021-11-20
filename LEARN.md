@@ -335,7 +335,7 @@ The method to call the functions of our program is pretty straight-forward. We w
       accounts: {
         baseAccount: baseAccount.publicKey,
         user: provider.wallet.publicKey,
-        systemProgram: SystemProgram.publicKey,
+        systemProgram: SystemProgram.programId,
       },
       signers: [baseAccount]
     });
