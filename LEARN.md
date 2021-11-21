@@ -9,7 +9,7 @@ long as the Solana blockchain itself exists. Your message will survive the test 
 
 This time-capsule quest will set us up for extending this project and creating an entire messaging app. How cool is that, right?
 
-# Setting up the Environment: 
+## Setting up the Environment: 
 
 There are a few things that we need to get up and running before we move forward in this quest. Before we move forward make sure you've a working NodeJS environment set up. We need rust, Solana, Mocha(a JS testing framework), Anchor and Phantom wallet for this quest.
 To install rust, run
@@ -54,7 +54,7 @@ Ruby, that means yes, you can develop things on vanilla Ruby, but Ruby on Rails 
 Solana development plus much more. It offers a Rust DSL (basically, an easier Rust) to work with along with IDL, CLI and workspace management. 
 
 
-# Running configurations on Solana CLI
+## Running configurations on Solana CLI
 
 The first command you should run on your terminal (assuming Solana CLI was properly installed in the last quest) is:
 
@@ -111,7 +111,7 @@ This should result in something like:
 
 ![](img/5.png)
 
-# Setting up our Anchor project
+## Setting up our Anchor project
 
 In this sub-quest all we would do is initialize an Anchor project and see whether everything's there and working fine or not and after move on ahead to make our own changes.
 Head over to your preferred destination for the project using your terminal and then type the following command:
@@ -151,7 +151,7 @@ The passing tests should result in the following screen:
 
 Now, let's head over to the `programs` directory again and start making changes to create our messaging app.
 
-## Writing our first program function
+### Writing our first program function
 
 Head over to `programs/messengerapp/src/lib.rs` and clear the code written there apart from the macro declarations and crates (libraries) that we will be using. After the clearning, your coding screen should look somehting like this:
 
@@ -187,10 +187,10 @@ The `Ok(())` syntax is used for error handling of the ProgramResult type. You ca
 Now, your coding screen should look something like this: 
 ![](img/12.png)
 
-### A small note about Accounts on Solana:
+**A small note about Accounts on Solana:**
 An account is not actually a wallet. Instead, it’s a way for the contract to persist data between calls. This includes information such as the count in our base_account, and also information about permissions on the account. Accounts pay rent in the form of lamports, and if it runs out, then the account is purged from the blockchain. Accounts with two years worth of rent attached are “rent-exempt” and can stay on the chain forever.
 
-# Writing out our second function
+## Writing out our second function
 
 In the last sub-quest we defined the `update` function, right? Now let's go ahead and write the logic for this function. 
 
@@ -207,7 +207,7 @@ Your code screen should now look like this:
 
 Wasn't this funny? We wrote the same code again, right? Well, yes, the logic of both the functions were same and the only real difference is in the `Account` inside of the `Context<>` struct. This is a simple container for the currently executing `program_id` generic over `Accounts`. This essentially is what would differentiate between whether the message coming in our program is the first message or some later messages. Now, the natural question would be where are all these `structs` defined? Calm down, champ. We haven't yet defined them, but that is exactly what we will be doing next.
 
-# Defining the first Account struct used in our program
+## Defining the first Account struct used in our program
 
 Let's first define the `Initialize` struct used in our `initialize` function that we defined two sub-quests back. We already have gone over what `Accounts` and `Context` are. So, here just keep in mind that whenever we need to include multiple `accounts` in a struct, we would use the derive Accounts macro, which is `#[derive(Accounts)]`, basically when we want to *derive* an account to pass to the function using other `accounts`, we use the derive accounts macro and while defining a singular `account` we would simply use the normal account macro, which is `[account]`. Now the normal account marco can also consist of many parameters which denote the permissions related to that particular account and we will look into those as we move ahead. Write the following code into your editor:
 
@@ -234,10 +234,10 @@ Your coding screen should look like this right now:
 
 ![](img/14.png)
 
-## Further Reading:
+### Further Reading:
 You can read up on different types of account constraints [here](https://docs.rs/anchor-lang/0.18.0/anchor_lang/derive.Accounts.html).
 
-# Defining all remaining Accounts of our program
+## Defining all remaining Accounts of our program
 
 With the understanding about all kinds of `Account` marcos and the associated parameters with them, let's get straight into writing the other two account structs.
 
@@ -264,7 +264,7 @@ After writing these definitions, your code screen should be looking something li
 
 Good, now we are just one step away from being completely done with the smart contract (programs in Solana lingo) side of our project.
 
-# Updating our program_id
+## Updating our program_id
 
 Remember the `declare_id!` macro of our program that was declared at the top with a random looking string, that we did not talk about? It is time to fix that. Currently, it looks something like this:
 
@@ -286,7 +286,7 @@ Now, copy the **program ID** from the above output to the `declare_id` macro in 
 
 Congratulations, we are now done with writing the programs of our project. You just completed the smart contract (programs in Solana lingo) side of the Time Capsule project :D
 
-# Creating the testing skeleton of our program
+## Creating the testing skeleton of our program
 
 Head over to `tests/messengerapp.js` and delete everything that's written there. We are going to be writing our tests from scratch. The first step would be to import the necessary libraries and constants. To do that, use the following code:
 
@@ -324,7 +324,7 @@ Now, the `program` is an abstraction that combines the Provider, idl, and the pr
 
 When we have these two things, we can start calling functions in our program, which is what we will be doing in our next sub-quest.
 
-# Writing our first test
+## Writing our first test
 
 The method to call the functions of our program is pretty straight-forward. We will use the program RPCs (Remote procedure calls) to access the function and then we will use the `web3.js` library to create `accounts` which have to be passed as the parameters to those functions. Let's first jump into the code of our first test and see things in action.
 
@@ -394,7 +394,7 @@ The `console.logs` can be skipped, but they are there for our own better underst
 
 With this we are done writing our tests, now all that remains is to actually run these tests.
 
-# Testing our program
+## Testing our program
 
 Remember, some time back we changed the `program_id` in the `declare_id` macro of our program? We will follow a similar step in the `Anchor.toml` file now. Open the `Anchor.toml` file and replace the old `program_id` with the new `program_id`, like so:
 
@@ -420,6 +420,6 @@ This should yield a result similar to:
 
 ![](img/23.png)
 
-# Congratulations
+## Congratulations
 
 Congratulations on not only building the building blocks of a chat application on Solana, which you can use as time-capsule on the blockchain, but also successfully testing that. In the next quest, we can go on ahead to see how to connect the front-end of a website with our program and see for ourselves how well our program is working. See you all soon :)
