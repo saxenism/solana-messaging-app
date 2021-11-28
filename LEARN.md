@@ -64,7 +64,7 @@ solana config get
 
 This should throw up a result similar to something like: 
 
-![](img/1.png)
+![](learn_src/learn_assets/1.png)
 
 If you didnot set up your keypair earlier, then you won't be having the `Keypair Path` in your results. To set that up, follow the instructions over [here](https://docs.solana.com/wallet-guide/paper-wallet#seed-phrase-generation)
 
@@ -81,7 +81,7 @@ solana address
 
 This would result into something like this:
 
-![](img/2.png)
+![](learn_src/learn_assets/2.png)
 
 Then, for more comprehensive details of your account, use the following command with the address that you got from the last command
 ```
@@ -90,7 +90,7 @@ solana account <your address from the last command>
 
 This would result into something like this:
 
-![](img/3.png)
+![](learn_src/learn_assets/3.png)
 
 Next, we want to spin up our local network. Think of this local network as a mock Solana blockchain running on your own single system. This network would be required for development and testing of our program. To spin it up, in a separate tab, use the following command:
 ```
@@ -99,7 +99,7 @@ solana-test-validator
 
 Once you get an image, like the one below, you know that your local validator (local network) is now up and running
 
-![](img/4.png)
+![](learn_src/learn_assets/4.png)
 
 Now, our last task is to top up our account with some SOL, which you can do by using:
 
@@ -109,7 +109,7 @@ solana airdrop 100
 
 This should result in something like:
 
-![](img/5.png)
+![](learn_src/learn_assets/5.png)
 
 ## Setting up our Anchor project
 
@@ -123,7 +123,7 @@ cd messengerapp
 
 This would result in a screen somewhat similar to this:
 
-![](img/6.png)
+![](learn_src/learn_assets/6.png)
 
 First we check whether we can see the *programs*, *app*, *programs*, *migrations* directory among others or not. If we can, we would head over to *programs/messengerapp/src/lib.rs* to see the default program that Anchor provides us. This is the most basic example possible on Anchor and what's happening here is simply that a user-defined function `Initialize` whenever called would successfully exit the program. That's all, nothing fancy. Now, let's try to compile this program using the following command:
 
@@ -133,11 +133,11 @@ anchor build
 
 This would trigger a build function and would something like this upon completion:
 
-![](img/7.png)
+![](learn_src/learn_assets/7.png)
 
 This build creates a new folder in your project directory called, `target`. This `target` folder contains the `idl` directory, which would also contain the `idl` for our program. The `IDL` or Interface Description Language describes the instructions exposed by the contract and is very similar to ABI in Solidity and user for similar purposes, ie, for tests and front-end integrations. Next, we can move onto testing this program, so that we can get familiar with how testing is done in Anchor. Head to `tests/messengerapp.js`. Here, you'll see a test written in javascript to interact and test the default program. There are a lot of things in the test, that may not make sense to you right now, but stick around and we'll get to those shortly. The test would look something like this:
 
-![](img/8.png)
+![](learn_src/learn_assets/8.png)
 
 Next, to actually run these tests, first head over to the tab where you ran the solana-test-validator command and kill that process (using Ctrl-C). Now, use the following command:
 
@@ -147,7 +147,7 @@ anchor test
 
 The passing tests should result in the following screen:
 
-![](img/9.png)
+![](learn_src/learn_assets/9.png)
 
 Now, let's head over to the `programs` directory again and start making changes to create our messaging app.
 
@@ -155,7 +155,7 @@ Now, let's head over to the `programs` directory again and start making changes 
 
 Head over to `programs/messengerapp/src/lib.rs` and clear the code written there apart from the macro declarations and crates (libraries) that we will be using. After the clearning, your coding screen should look somehting like this:
 
-![](img/10.png)
+![](learn_src/learn_assets/10.png)
 
 Now let us simply define two functions that we will be using in our Solana program. The bulk of the program goes in a module under the `#[program]` macro. We'll just define them under the `pub mod messengerapp` and write the logic later. These two function definitions would look like this:
 ```
@@ -171,7 +171,7 @@ Here `pub` means public and `fn` means function, implying that they are public f
 
 After defining the above two functions, your code should look something like this:
 
-![](img/11.png)
+![](learn_src/learn_assets/11.png)
 
 Now, let's write our logic for the `initialize` function, ok? Let's first make our intentions clear for this function and the program in general. We want to keep track of two things here. First, is the data that is being passed while calling the function and the second is the list of all the data(messages) that have been passed to our specific account. So, we would want our main account (the account that will handle all the messaging stuff of the program) to have two fields, one for storing the incoming data and the other for keeping a record of all earlier data. We call this account the `base_account`. Also, keep in mind that since we will be adding to the data_list everytime a new data is introduced, we will need the account to be mutable, ie, the account should be able to accept changes. Write the following logic inside the `initialize` function now:
 
@@ -185,7 +185,7 @@ Ok(())
 The `Ok(())` syntax is used for error handling of the ProgramResult type. You can think of `Ok(())` like a gate, that lets the program continue if there are no errors but sends the program into another state if an error is encountered.  
 
 Now, your coding screen should look something like this: 
-![](img/12.png)
+![](learn_src/learn_assets/12.png)
 
 **A small note about Accounts on Solana:**
 An account is not actually a wallet. Instead, it’s a way for the contract to persist data between calls. This includes information such as the count in our base_account, and also information about permissions on the account. Accounts pay rent in the form of lamports, and if it runs out, then the account is purged from the blockchain. Accounts with two years worth of rent attached are “rent-exempt” and can stay on the chain forever.
@@ -203,7 +203,7 @@ Ok(())
 ```
 
 Your code screen should now look like this:
-![](img/13.png)
+![](learn_src/learn_assets/13.png)
 
 Wasn't this funny? We wrote the same code again, right? Well, yes, the logic of both the functions were same and the only real difference is in the `Account` inside of the `Context<>` struct. This is a simple container for the currently executing `program_id` generic over `Accounts`. This essentially is what would differentiate between whether the message coming in our program is the first message or some later messages. Now, the natural question would be where are all these `structs` defined? Calm down, champ. We haven't yet defined them, but that is exactly what we will be doing next.
 
@@ -232,7 +232,7 @@ The peculiar thing you might notice here is that the `base_account` field is of 
 
 Your coding screen should look like this right now:
 
-![](img/14.png)
+![](learn_src/learn_assets/14.png)
 
 ### Further Reading:
 You can read up on different types of account constraints [here](https://docs.rs/anchor-lang/0.18.0/anchor_lang/derive.Accounts.html).
@@ -260,7 +260,7 @@ Now, for the `Update` account struct, we notice that it is essentially the same 
 
 After writing these definitions, your code screen should be looking something like this:
 
-![](img/15.png)
+![](learn_src/learn_assets/15.png)
 
 Good, now we are just one step away from being completely done with the smart contract (programs in Solana lingo) side of our project.
 
@@ -268,7 +268,7 @@ Good, now we are just one step away from being completely done with the smart co
 
 Remember the `declare_id!` macro of our program that was declared at the top with a random looking string, that we did not talk about? It is time to fix that. Currently, it looks something like this:
 
-![](img/16.png)
+![](learn_src/learn_assets/16.png)
 
 Since, we already discussed that we would be working on our local network, we need to deploy our program on our local network and then put the `program_id` recieved from there here at this macro. First make sure that your local validator is running in a different tab. If it is not, run it again in a different tab using the `solana-test-validator` command. Now use the following command to deploy your anchor program:
 
@@ -278,11 +278,11 @@ anchor deploy
 
 The above command should result in a screen similar to this:
 
-![](img/17.png)
+![](learn_src/learn_assets/17.png)
 
 Now, copy the **program ID** from the above output to the `declare_id` macro in our program. Something like this:
 
-![](img/18.png)
+![](learn_src/learn_assets/18.png)
 
 Congratulations, we are now done with writing the programs of our project. You just completed the smart contract (programs in Solana lingo) side of the Time Capsule project :D
 
@@ -316,7 +316,7 @@ describe("Testing our messaging app: ", function() {
 
 Now, your code screen should look something like:
 
-![](img/19.png)
+![](learn_src/learn_assets/19.png)
 
 The additional things that we coded there were the introduction of `provider`. The `provider` is the abstraction of a connection to the Solana network. In the test, the Anchor framework will create the provider for us based on the environment `(anchor.Provider.env())`.
 
@@ -355,7 +355,7 @@ After this function is run, we simply need to grab hold of the baseAccount and c
 
 After this, your coding screen should look like this:
 
-![](img/20.png)
+![](learn_src/learn_assets/20.png)
 
 What we did here `fetch` the `baseAccount` from the program after the `initialize` function has been run and store it in a variable called `account`. Then we check whether the `data` field of `account` is the same as our message or not. In the last step, we save the state of this `baseAccount` in a variable called `_baseAccount`, so that we can check that later in the other tests.
 
@@ -388,7 +388,7 @@ With the above code, we assigned the `_baseAccount` to a new `baseAccount`. This
 
 With this, your coding screen should look something like this:
 
-![](img/21.png)
+![](learn_src/learn_assets/21.png)
 
 The `console.logs` can be skipped, but they are there for our own better understanding. So, in this block of code, we again fetch the `baseAccount` after the `update` function and check whether the `data` of the account has been updated or not. Then we print the details of the account itself, then the entire list of all the messages and finally we check whether the length of this `data_list` field of the `baseAccount` is 2 or not (since it should ideally contain [*My first message*, *My second message*]).
 
@@ -398,7 +398,7 @@ With this we are done writing our tests, now all that remains is to actually run
 
 Remember, some time back we changed the `program_id` in the `declare_id` macro of our program? We will follow a similar step in the `Anchor.toml` file now. Open the `Anchor.toml` file and replace the old `program_id` with the new `program_id`, like so:
 
-![](img/22.png)
+![](learn_src/learn_assets/22.png)
 
 Now, it's the moment of truth. Head over to the console and type the following command if you have not stopped the `solana-test-validator` running in a different tab:
 
@@ -408,7 +408,7 @@ anchor test --skip-local-validator
 
 This will hopefully give a result similar to this:
 
-![](img/24.png)
+![](learn_src/learn_assets/24.png)
 
 And if this didn't work for you go to your local validator tab and close it using `Ctrl` + `C` and after come back to the tab where you were testing and type the following command:
 
@@ -418,7 +418,7 @@ anchor test
 
 This should yield a result similar to:
 
-![](img/23.png)
+![](learn_src/learn_assets/23.png)
 
 ## Congratulations
 
