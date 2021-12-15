@@ -422,4 +422,4 @@ This should yield a result similar to:
 
 ## Congratulations
 
-Congratulations on not only building the building blocks of a chat application on Solana, which you can use as time-capsule on the blockchain, but also successfully testing that. In the next quest, we can go on ahead to see how to connect the front-end of a website with our program and see for ourselves how well our program is working. See you all soon :)
+Congratulations on not only building the building blocks of a chat application on Solana, which you can use as time-capsule on the blockchain, but also successfully testing that. In the next quest, we can go on ahead to see how to connect the front-end of a website with our program and see for ourselves how well our program is working. Meanwhile, you can proceed to [Layer3](https://alpha.layer3.xyz/task/build-a-messaging-app-using-solana-smart-contracts-in-rust) and claim your NFT reward for succesfully completing this quest! See you all soon :) 
