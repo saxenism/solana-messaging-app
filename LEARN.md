@@ -245,6 +245,7 @@ With the understanding about all kinds of `Account` marcos and the associated pa
 pub struct Update<'info> {
     #[account(mut)]
     pub base_account: Account<'info, BaseAccount>,
+    }
 ```
 
 and now the final `BaseAccount` struct:
@@ -254,6 +255,7 @@ and now the final `BaseAccount` struct:
 pub struct BaseAccount {
     pub data: String,
     pub data_list: Vec<String>,
+    }
 ```
 
 Now, for the `Update` account struct, we notice that it is essentially the same as the `Initialize` account struct, it's just that we are using an existing field `base_account` of type `BaseAccount` and not creating it. After which, we define the `BaseAccount` that was being used everywhere. As discussed earlier, it has two fields, one is `data` of type `String` to store the incoming value of the message while the other is a `vector of strings` to store/persist all the messages in that account. A vector is a list of elements with no specified size. But, bear in mind that initially we had createed our base account with the space of `64 + 64` so there will be a limit to thow many messages can be stored. You can explore the limits at different sizes as a side quest.
