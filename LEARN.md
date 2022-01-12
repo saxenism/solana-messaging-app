@@ -242,6 +242,7 @@ You can read up on different types of account constraints [here](https://docs.rs
 With the understanding about all kinds of `Account` marcos and the associated parameters with them, let's get straight into writing the other two account structs.
 
 ```
+#[derive(Accounts)]
 pub struct Update<'info> {
     #[account(mut)]
     pub base_account: Account<'info, BaseAccount>,
